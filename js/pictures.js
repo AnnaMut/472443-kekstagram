@@ -126,15 +126,7 @@ var removeUpload = function () {
 
 closeUploadbutton.addEventListener('click', removeUpload);
 
-var showEffects = function () {
-  var chromeEf = document.querySelector('#effect-chrome');
-  if (chromeEf.checked) {
-    // var ue = u.querySelector('img');
-    u.style.webkitFilter = 'grayscale(1)';
-  }
-};
-
-var u = document.querySelector('.img-upload__preview');
+var uploadImg = document.querySelector('.img-upload__preview');
 var chrome = document.querySelector('#effect-chrome');
 var none = document.querySelector('#effect-none');
 var sepia = document.querySelector('#effect-sepia');
@@ -142,83 +134,136 @@ var marvin = document.querySelector('#effect-marvin');
 var phobos = document.querySelector('#effect-phobos');
 var heat = document.querySelector('#effect-heat');
 
-var rng = document.querySelector('.scale__value');
-// var fun1 = function () {
-// rng - это Input
-// var div=document.getElementById('test'); // div - блок test
-// div.style.width=rng.value+'px';
-// u.style.webkitFilter = rng.value;
-// };
+var range = document.querySelector('.scale__value');
+var level = document.querySelector('.scale__level');
+var resize = document.querySelector('.resize__control--value');
+var resizeMinus = document.querySelector('.resize__control--minus');
+var resizePlus = document.querySelector('.resize__control--plus');
+
+var scaleChangeHandler = function () {
+  if (resize.value === '25%') {
+    uploadImg.style.transform = 'scale(0.25)';
+  }
+  if (resize.value === '50%') {
+    uploadImg.style.transform = 'scale(0.50)';
+  }
+  if (resize.value === '75%') {
+    uploadImg.style.transform = 'scale(0.75)';
+  }
+  if (resize.value === '100%') {
+    uploadImg.style.transform = '';
+  }
+};
+
+var resizePlusHandler = function () {
+  resize.value = parseInt(resize.value, 10) + 25 + '%';
+  scaleChangeHandler();
+};
+
+var resizeMinusHandler = function () {
+  resize.value = parseInt(resize.value, 10) - 25 + '%';
+  scaleChangeHandler();
+};
+
+// resizePlus.addEventListener('click', scaleChangeHandler);
+// resizeMinus.addEventListener('click', scaleChangeHandler);
+
+resizePlus.addEventListener('click', resizePlusHandler);
+resizeMinus.addEventListener('click', resizeMinusHandler);
 
 var getEffects = function (x) {
   var positionX = parseInt(x, 10);
-  // var positionY = parseInt(y, 10);
-  rng.value = positionX;
+  range.value = positionX;
+  // level.width = positionX + '%';
+  var filtervalue;
+  if (uploadImg.classList.contains('effects__preview--chrome')) {
+    filtervalue = positionX / 100;
+    uploadImg.style.webkitFilter = 'grayscale(' + filtervalue + ')';
+  }
+  if (uploadImg.classList.contains('effects__preview--sepia')) {
+    filtervalue = positionX / 100;
+    uploadImg.style.webkitFilter = 'sepia(' + filtervalue + ')';
+  }
+  if (uploadImg.classList.contains('effects__preview--marvin')) {
+    filtervalue = positionX;
+    uploadImg.style.webkitFilter = 'invert(' + filtervalue + '%' + ')';
+  }
+  if (uploadImg.classList.contains('effects__preview--phobos')) {
+    filtervalue = positionX * 3 / 100;
+    uploadImg.style.webkitFilter = 'blur(' + filtervalue + 'px' + ')';
+  }
+  if (uploadImg.classList.contains('effects__preview--heat')) {
+    filtervalue = positionX * 3 / 100;
+    uploadImg.style.webkitFilter = 'brightness(' + filtervalue + ')';
+  }
 };
+// var effects = document.querySelector('.effects__list');
+// effects.addEventListener('input', getEffects);
 
-// rng.addEventListener('input', fun1);
 var getChromEffect = function () {
-  // u.style.webkitFilter = 'grayscale(1)';
-  u.classList.remove('effects__preview--sepia');
-  u.classList.remove('effects__preview--marvin');
-  u.classList.remove('effects__preview--phobos');
-  u.classList.remove('effects__preview--heat');
-  u.classList.toggle('effects__preview--chrome');
+  uploadImg.classList.remove('effects__preview--sepia');
+  uploadImg.classList.remove('effects__preview--marvin');
+  uploadImg.classList.remove('effects__preview--phobos');
+  uploadImg.classList.remove('effects__preview--heat');
+  uploadImg.classList.toggle('effects__preview--chrome');
 };
 chrome.addEventListener('click', getChromEffect);
+chrome.addEventListener('click', getEffects);
 
 var getNoneEffect = function () {
-  u.classList.remove('effects__preview--chrome');
-  u.classList.remove('effects__preview--sepia');
-  u.classList.remove('effects__preview--marvin');
-  u.classList.remove('effects__preview--phobos');
-  u.classList.remove('effects__preview--heat');
+  uploadImg.classList.remove('effects__preview--chrome');
+  uploadImg.classList.remove('effects__preview--sepia');
+  uploadImg.classList.remove('effects__preview--marvin');
+  uploadImg.classList.remove('effects__preview--phobos');
+  uploadImg.classList.remove('effects__preview--heat');
   // u.style.webkitFilter = '';
 };
 none.addEventListener('click', getNoneEffect);
+none.addEventListener('click', getEffects);
 
 var getSepiaEffect = function () {
-  // u.style.webkitFilter = 'sepia(1)';
-  u.classList.remove('effects__preview--chrome');
-  u.classList.remove('effects__preview--marvin');
-  u.classList.remove('effects__preview--phobos');
-  u.classList.remove('effects__preview--heat');
-  u.classList.toggle('effects__preview--sepia');
+  uploadImg.classList.remove('effects__preview--chrome');
+  uploadImg.classList.remove('effects__preview--marvin');
+  uploadImg.classList.remove('effects__preview--phobos');
+  uploadImg.classList.remove('effects__preview--heat');
+  uploadImg.classList.toggle('effects__preview--sepia');
 };
 sepia.addEventListener('click', getSepiaEffect);
+sepia.addEventListener('click', getEffects);
 
 var getMarvinEffect = function () {
-  // u.style.webkitFilter = 'invert(100%)';
-  u.classList.remove('effects__preview--chrome');
-  u.classList.remove('effects__preview--sepia');
-  u.classList.remove('effects__preview--phobos');
-  u.classList.remove('effects__preview--heat');
-  u.classList.toggle('effects__preview--marvin');
+  uploadImg.classList.remove('effects__preview--chrome');
+  uploadImg.classList.remove('effects__preview--sepia');
+  uploadImg.classList.remove('effects__preview--phobos');
+  uploadImg.classList.remove('effects__preview--heat');
+  uploadImg.classList.toggle('effects__preview--marvin');
 };
 marvin.addEventListener('click', getMarvinEffect);
+marvin.addEventListener('click', getEffects);
 
 var getPhobosEffect = function () {
-  // u.style.webkitFilter = 'blur(5px)';
-  u.classList.remove('effects__preview--chrome');
-  u.classList.remove('effects__preview--sepia');
-  u.classList.remove('effects__preview--marvin');
-  u.classList.remove('effects__preview--heat');
-  u.classList.toggle('effects__preview--phobos');
+  uploadImg.classList.remove('effects__preview--chrome');
+  uploadImg.classList.remove('effects__preview--sepia');
+  uploadImg.classList.remove('effects__preview--marvin');
+  uploadImg.classList.remove('effects__preview--heat');
+  uploadImg.classList.toggle('effects__preview--phobos');
 };
 phobos.addEventListener('click', getPhobosEffect);
+phobos.addEventListener('click', getEffects);
 
 var getHeatEffect = function () {
-  // u.style.webkitFilter = 'brightness(3)';
-  u.classList.remove('effects__preview--chrome');
-  u.classList.remove('effects__preview--sepia');
-  u.classList.remove('effects__preview--marvin');
-  u.classList.remove('effects__preview--phobos');
-  u.classList.toggle('effects__preview--heat');
+  uploadImg.classList.remove('effects__preview--chrome');
+  uploadImg.classList.remove('effects__preview--sepia');
+  uploadImg.classList.remove('effects__preview--marvin');
+  uploadImg.classList.remove('effects__preview--phobos');
+  uploadImg.classList.toggle('effects__preview--heat');
+  getEffects();
 };
 heat.addEventListener('click', getHeatEffect);
+heat.addEventListener('click', getEffects);
 
 var pin = document.querySelector('.scale__pin');
-pin.addEventListener('mouseup', showEffects);
+
 var slider = document.querySelector('.img-upload__scale');
 var startCoordX;
 var line = document.querySelector('.scale__line');
@@ -245,8 +290,9 @@ var onMouseMove = function (moveEvt) {
   if (pinPositionX > rightPosition) {
     pinPositionX = rightPosition + PIN_SIZE;
   }
-  pin.style.left = pinPositionX + 'px';
-  getEffects(pinPositionX);
+  pin.style.left = Math.round(pinPositionX / 4.5) + '%';
+  level.width = pin.style.left;
+  getEffects(pin.style.left);
 };
 
 var onMouseUp = function () {
