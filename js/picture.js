@@ -12,7 +12,12 @@
 
   var closeBigPhoto = function () {
     var bigPic = document.querySelector('.big-picture');
+    document.querySelector('body').classList.remove('modal-open');
     return bigPic.classList.add('hidden');
+  };
+
+  var getRandomPoint = function (min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
   };
 
   var createComments = function () {
@@ -21,7 +26,7 @@
     comment.classList.add('social__comment--text');
     var img = document.createElement('img');
     img.classList.add('social__picture');
-    img.src = 'img/avatar-' + window.data.getRandomPoint(1, 6) + '.svg';
+    img.src = 'img/avatar-' + getRandomPoint(1, 6) + '.svg';
     img.alt = 'Аватар комментатора фотографии';
     img.width = 35;
     img.height = 35;
