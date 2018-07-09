@@ -14,15 +14,28 @@
     return template;
   };
 
-  var successHandler = function (data) {
+  var renderPics = function (data) {
+    var photo = document.createDocumentFragment();
     var photoBox = document.querySelector('.pictures');
+    var filters = document.querySelector('.img-filters');
     for (var i = 0; i < data.length; i++) {
-      var photo = document.createDocumentFragment();
-      photo = getPhoto(data[i]);
-      photoBox.appendChild(photo);
+      photo.appendChild(getPhoto(data[i]));
     }
+    photoBox.appendChild(photo);
+    filters.classList.remove('img-filters--inactive');
   };
 
+  var successHandler = function (data) {
+    window.gallery.photos = data.slice(0);
+    renderPics(window.gallery.photos);
+  };
+
+
   window.backend.loadData(successHandler, window.backend.errorHandler);
+
+  window.gallery = {
+    photos: [],
+    renderPics: renderPics
+  };
 
 })();
