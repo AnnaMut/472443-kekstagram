@@ -1,4 +1,4 @@
-# Личный проект «Кекстаграм» [![Build status][travis-image]][travis-url]
+# Личный проект «Кекстаграм» 
 
 * Студент: [Анна Мут](https://up.htmlacademy.ru/javascript/13/user/472443).
 
