@@ -3,15 +3,15 @@
 (function () {
 
   var CLASS_PATH = 'effects__preview--';
+  var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
   var upload = document.querySelector('#upload-file');
   var closeUploadbutton = document.querySelector('.img-upload__cancel');
-  // var imgOverlay = document.querySelector('.img-upload__overlay');
   var uploadImg = document.querySelector('.img-upload__preview');
   var scale = document.querySelector('.scale');
   var pin = document.querySelector('.scale__pin');
   var effects = document.querySelector('.effects__list');
   var level = document.querySelector('.scale__level');
-  // var checkedEffect = imgOverlay.querySelector('input[name=effect]:checked').value;
+  var imagesPreview = document.querySelector('.img-upload__preview').querySelector('img');
 
   var effectChangeHandler = function (evt) {
     if (evt.target.classList.contains('effects__radio')) {
@@ -35,6 +35,36 @@
   };
 
   upload.addEventListener('change', showUpload);
+
+  var checkFileType = function (name) {
+    return FILE_TYPES.some(function (item) {
+      return name.endsWith(item);
+    });
+  };
+
+  var loadImages = function (file) {
+    if (file) {
+      var fileName = file.name.toLowerCase();
+      var matches = checkFileType(fileName);
+      if (matches) {
+        var reader = new FileReader();
+        reader.addEventListener('load', function () {
+          imagesPreview.src = reader.result;
+        });
+        reader.readAsDataURL(file);
+      }
+    }
+  };
+
+  var imagesChangeHandler = function () {
+    var files = upload.files;
+    Array.prototype.forEach.call(files, (function (file) {
+      loadImages(file);
+    }));
+    effects.addEventListener('click', effectChangeHandler);
+  };
+
+  upload.addEventListener('change', imagesChangeHandler);
 
   var removeUpload = function () {
     var u = document.querySelector('.img-upload__overlay');
