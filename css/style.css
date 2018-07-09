@@ -1247,3 +1247,17 @@ main {
     grid-row: 1 / span 3;
   }
 }
+
+.error-node
+{
+    z-index: 100;
+    margin: 0 auto;
+    text-align: center;
+    background-color: #C71585;
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 200px;
+    font-size: 30px;
+}
+
